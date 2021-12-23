@@ -15,6 +15,7 @@
              background: #F5ECFF;
              color:#6100CE;
         }
+        
     </style>
 </head>
 <body>
@@ -26,7 +27,10 @@
       
    </center>
     <script type="text/javascript">
-
+        var regex = /^[a-zA-Z0-9]{3,200}$/i;
+        if (!regex.test($('#chk').val())) {
+            alert("Please fill data currectly...");
+        }
         function DeleteProductDetails(control) {
             var Info = {
                 Id: $(control).closest("tr").find("label").html()
@@ -83,7 +87,7 @@
                         if ($(this).find("label").length > 0) {
                             var value = $(this).find("label").html();
                             $(this).find("label").hide();
-                            $(this).append("<input type='text' value='" + value + "' />");
+                            $(this).append("<input type='text' id='chk' value='" + value + "' />");
                         }
 
                     }
@@ -100,6 +104,8 @@
                     UnitPrice: $(control).closest("tr").find("td:nth-child(4)").find("input").val(),
                     UnitsInStock: $(control).closest("tr").find("td:nth-child(5)").find("input").val()
                 };
+
+                
 
                 $.ajax({
                     url: "Index.aspx/UpdateProductDetails",

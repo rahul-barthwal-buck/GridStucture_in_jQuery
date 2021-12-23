@@ -20,25 +20,7 @@ namespace GirdStructure
         {
 
         }
-
-        public static void CreateConnection()
-        {
-            SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
-            _sqlCommand = new SqlCommand();
-            _sqlCommand.Connection = _sqlConnection;
-        }
-        public static void OpenConnection()
-        {
-            _sqlCommand.Connection.Open();
-        }
-        public static void CloseConnection()
-        {
-            _sqlCommand.Connection.Close();
-        }
-        public static void DisposeConnection()
-        {
-            _sqlCommand.Connection.Dispose();
-        }
+       
 
         [WebMethod]
         public static string GetAllProducts()
