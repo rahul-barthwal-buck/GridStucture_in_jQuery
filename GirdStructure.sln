@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirdStructure", "GirdStructure\GirdStructure.csproj", "{1E9A1D27-7EDE-4F8D-9C1B-FFC9DB46B5F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E9A1D27-7EDE-4F8D-9C1B-FFC9DB46B5F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E9A1D27-7EDE-4F8D-9C1B-FFC9DB46B5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E9A1D27-7EDE-4F8D-9C1B-FFC9DB46B5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E9A1D27-7EDE-4F8D-9C1B-FFC9DB46B5F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14628B09-BF45-487C-9F81-3AF8966CE327}
+	EndGlobalSection
+EndGlobal
