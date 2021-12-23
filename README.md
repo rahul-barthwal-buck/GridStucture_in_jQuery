@@ -2,4 +2,4 @@
 
 # Currently working in progress....
 
-# Before Running, please run the table script on SQL server.
+# Before Running, please run the table script on MS SQL server.
