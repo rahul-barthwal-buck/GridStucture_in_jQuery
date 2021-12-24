@@ -15,16 +15,6 @@
              background: #F5ECFF;
              color:#6100CE;
         }
-        .down {
-          transform: rotate(45deg);
-          -webkit-transform: rotate(45deg);
-        }
-        #SortByProduct
-        {
-            font-size:15px;
-            font-weight:bold;
-            margin-left:35px;
-        }
         
     </style>
 </head>
@@ -68,7 +58,7 @@
                     $("#data").empty();
                     // var Data = JSON.parse(data.d);
                     //var arr = Data.Table;
-                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name</th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
                     for (var i = 0; i < data.d.length; i++) {
                         temp += "<tr>";
                         temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
@@ -105,25 +95,28 @@
                 data: JSON.stringify({ pageSize: pgVal, nextProduct: count }),
                 success: function (data) {
 
-                    //console.log(val);
-                    //console.log(data.d.length);
-                    $("#data").empty();
-                    // var Data = JSON.parse(data.d);
-                    //var arr = Data.Table;
-                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
-                    for (var i = 0; i < data.d.length; i++) {
-                        temp += "<tr>";
-                        temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + data.d[i].ProductName + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + data.d[i].QuantityPerUnit + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + data.d[i].UnitPrice + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + data.d[i].UnitsInStock + "</label>" + "</td>";
-                        temp += "<td><input type='button' class='btn btn-success' itag='Edit' value='Edit' onclick='return EditProductDetails(this)'/></td>";
-                        temp += "<td><input type='button' class='btn btn-danger' itag='Delete' value='Delete' onclick='return DeleteProductDetails(this);'/></td>";
-                        temp += "</tr>";
-                    }
+                    //console.log(data.d);
+                    if (data.d.length <= 0) {
+                        GetPreviousProduct();
+                    } else {
+                        $("#data").empty();
+                        // var Data = JSON.parse(data.d);
+                        //var arr = Data.Table;
+                        var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name</th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                        for (var i = 0; i < data.d.length; i++) {
+                            temp += "<tr>";
+                            temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].ProductName + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].QuantityPerUnit + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].UnitPrice + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].UnitsInStock + "</label>" + "</td>";
+                            temp += "<td><input type='button' class='btn btn-success' itag='Edit' value='Edit' onclick='return EditProductDetails(this)'/></td>";
+                            temp += "<td><input type='button' class='btn btn-danger' itag='Delete' value='Delete' onclick='return DeleteProductDetails(this);'/></td>";
+                            temp += "</tr>";
+                        }
 
-                    $("#data").append(temp);
+                        $("#data").append(temp);
+                    }
                 },
                 error: function (error) {
                     alert("Fail");
@@ -138,7 +131,7 @@
             if (count <= 0) {
                 count = 1;
             }
-                console.log(count);
+               // console.log(count);
                 var pgVal = $("#drpPageSize").val();
                 var gtPrevPage = count;
                 $("#GotoPage").val(gtPrevPage);
@@ -155,7 +148,7 @@
                         $("#data").empty();
                         // var Data = JSON.parse(data.d);
                         //var arr = Data.Table;
-                        var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                        var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name</th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
                         for (var i = 0; i < data.d.length; i++) {
                             temp += "<tr>";
                             temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
@@ -321,7 +314,7 @@
                    // var Data = JSON.parse(data.d);
                     //var arr = Data.Table;
                    // console.log(data.d.length);
-                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name</th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
                     for (var i = 0; i < data.d.length; i++) {
                         temp += "<tr>";
                         temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
