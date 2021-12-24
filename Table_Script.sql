@@ -3,10 +3,10 @@
 
 USE [GridStructure]
 GO
-/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/23/2021 6:55:46 PM ******/
+/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/24/2021 7:35:01 PM ******/
 DROP TABLE IF EXISTS [dbo].[ProductDetails]
 GO
-/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/23/2021 6:55:46 PM ******/
+/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/24/2021 7:35:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -25,9 +25,30 @@ CREATE TABLE [dbo].[ProductDetails](
 GO
 SET IDENTITY_INSERT [dbo].[ProductDetails] ON 
 GO
-INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (8, N'One Plus 8 Pro', 30, 750, 20)
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (8, N'One Plus 8 Pro', 30, 750, 26)
 GO
 INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (9, N'IPhone 13 Max Pro', 21, 1500, 15)
 GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (11, N'Realme X2 pro', 24, 450, 26)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (12, N'Realme Nazro 50A', 35, 340, 12)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (13, N'Realme Narzo 20 pro', 12, 400, 19)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (14, N'IPhone 13 mini', 34, 1300, 30)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (15, N'Oppo reno', 11, 500, 33)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (16, N'Nokia 123', 45, 400, 24)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (17, N'Nokia k234', 23, 345, 56)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (18, N'Micromax k10', 324, 200, 70)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (19, N'Samsung A31', 23, 500, 11)
+GO
+INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_Price], [Units_In_Stock]) VALUES (20, N'Samsung Galaxy note 10', 11, 700, 10)
+GO
 SET IDENTITY_INSERT [dbo].[ProductDetails] OFF
 GO
+
