@@ -20,19 +20,37 @@ namespace GirdStructure
         {
 
         }
-       
+      
 
         [WebMethod]
-        public static string GetAllProducts()
+        public static List<Products> GetAllProducts(int pageSize)
         {
-            SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
-            _sqlConnection.Open();
-            SqlDataAdapter _sqlDataAdapter = new SqlDataAdapter("SELECT Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails", _sqlConnection);
-            DataSet _dtSet = new DataSet();
-            _sqlDataAdapter.Fill(_dtSet);
 
-            string data = JsonConvert.SerializeObject(_dtSet, Formatting.Indented);
-            return data;
+            List<Products> productList = new List<Products>();
+            productList.Clear();
+            PagingAndSorting paging = new PagingAndSorting();
+            paging.PageSize = pageSize;
+            using (SqlConnection cn = new SqlConnection(strConnectionString))
+            {
+                cn.Open();
+                SqlCommand sqlCommand = new SqlCommand("SELECT TOP(@PageSize) Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails", cn);
+                sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    Products f = new Products();
+                    f.ProductId = (int)reader["Product_Id"];
+                    f.ProductName = (string)reader["Name"];
+                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
+                    f.UnitPrice = (int)reader["Unit_Price"];
+                    f.UnitsInStock = (int)reader["Units_In_Stock"];
+                    productList.Add(f);
+                }
+                cn.Close();
+            }
+            return productList;
+
+
         }
 
         [WebMethod]
@@ -76,6 +94,97 @@ namespace GirdStructure
                 return false;
             }
             return true;
+        }
+
+
+        [WebMethod]
+        public static List<Products> GetProductDetailsByPageSize(int pageSize)
+        {
+            List<Products> productList = new List<Products>();
+            productList.Clear();
+            PagingAndSorting paging = new PagingAndSorting();
+            paging.PageSize = pageSize;
+            using (SqlConnection cn = new SqlConnection(strConnectionString))
+            {
+                cn.Open();
+                SqlCommand sqlCommand = new SqlCommand("SELECT TOP(@PageSize) Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails", cn);
+                sqlCommand.Parameters.AddWithValue("@PageSize",paging.PageSize);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    Products f = new Products();
+                    f.ProductId = (int)reader["Product_Id"];
+                    f.ProductName = (string)reader["Name"];
+                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
+                    f.UnitPrice = (int)reader["Unit_Price"];
+                    f.UnitsInStock = (int)reader["Units_In_Stock"];
+                    productList.Add(f);
+                }
+                cn.Close();
+            }
+            return productList;
+        }
+
+
+        [WebMethod]
+        public static List<Products> GetNextProduct(int pageSize, int nextProduct)
+        {
+            List<Products> productList = new List<Products>();
+            productList.Clear();
+            PagingAndSorting paging = new PagingAndSorting();
+            paging.PageSize = pageSize;
+            paging.NextProduct = nextProduct;
+            using (SqlConnection cn = new SqlConnection(strConnectionString))
+            {
+                cn.Open();
+                SqlCommand sqlCommand = new SqlCommand("SELECT Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails ORDER BY  Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock OFFSET (@PageSize*@NextProduct) ROWS FETCH NEXT (@PageSize) ROWS ONLY", cn);
+                sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
+                sqlCommand.Parameters.AddWithValue("@NextProduct", paging.NextProduct);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    Products f = new Products();
+                    f.ProductId = (int)reader["Product_Id"];
+                    f.ProductName = (string)reader["Name"];
+                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
+                    f.UnitPrice = (int)reader["Unit_Price"];
+                    f.UnitsInStock = (int)reader["Units_In_Stock"];
+                    productList.Add(f);
+                }
+                cn.Close();
+            }
+            return productList;
+        }
+
+
+        [WebMethod]
+        public static List<Products> GetPreviousProduct(int pageSize, int nextProduct)
+        {
+            List<Products> productList = new List<Products>();
+            productList.Clear();
+            PagingAndSorting paging = new PagingAndSorting();
+            paging.PageSize = pageSize;
+            paging.NextProduct = nextProduct;
+            using (SqlConnection cn = new SqlConnection(strConnectionString))
+            {
+                cn.Open();
+                SqlCommand sqlCommand = new SqlCommand("SELECT Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails ORDER BY  Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock OFFSET (@PageSize*@NextProduct) ROWS FETCH NEXT (@PageSize) ROWS ONLY", cn);
+                sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
+                sqlCommand.Parameters.AddWithValue("@NextProduct", paging.NextProduct);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    Products f = new Products();
+                    f.ProductId = (int)reader["Product_Id"];
+                    f.ProductName = (string)reader["Name"];
+                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
+                    f.UnitPrice = (int)reader["Unit_Price"];
+                    f.UnitsInStock = (int)reader["Units_In_Stock"];
+                    productList.Add(f);
+                }
+                cn.Close();
+            }
+            return productList;
         }
 
     }

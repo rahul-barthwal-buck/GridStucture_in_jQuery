@@ -15,6 +15,16 @@
              background: #F5ECFF;
              color:#6100CE;
         }
+        .down {
+          transform: rotate(45deg);
+          -webkit-transform: rotate(45deg);
+        }
+        #SortByProduct
+        {
+            font-size:15px;
+            font-weight:bold;
+            margin-left:35px;
+        }
         
     </style>
 </head>
@@ -24,13 +34,153 @@
        <br />
        <br />
        <div id="data" class="table-responsive"></div>
-      
+        <div class="table-responsive">
+           <table class='table table-bordered table-striped table-sm prdtable' border='1' style="width:800px;">
+               <tr>
+                   <td align="right">
+                       Go to Page:
+                       <input type="text" style="width:40px;text-align:center;" value="1"  id="GotoPage"/>
+                       Show rows:
+                       <select id="drpPageSize" onchange="GetPageSize(this);">
+                          <option  value="5" selected="selected">5</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                       </select>
+                       <input type="button" value="<" onclick="return GetPreviousProduct();" />
+                       <input type="button" value=">" onclick ="return GetNextProduct();" />
+                   </td>
+               </tr>
+           </table>
+       </div>
    </center>
     <script type="text/javascript">
-        var regex = /^[a-zA-Z0-9]{3,200}$/i;
-        if (!regex.test($('#chk').val())) {
-            alert("Please fill data currectly...");
+        function GetPageSize(sel) {
+            var val = sel.value;
+            $.ajax({
+                url: "Index.aspx/GetProductDetailsByPageSize",
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({pageSize:val}),
+                success: function (data) {
+                    //console.log(val);
+                    //console.log(data.d.length);
+                    $("#data").empty();
+                    // var Data = JSON.parse(data.d);
+                    //var arr = Data.Table;
+                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                    for (var i = 0; i < data.d.length; i++) {
+                        temp += "<tr>";
+                        temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].ProductName + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].QuantityPerUnit + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].UnitPrice + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].UnitsInStock + "</label>" + "</td>";
+                        temp += "<td><input type='button' class='btn btn-success' itag='Edit' value='Edit' onclick='return EditProductDetails(this)'/></td>";
+                        temp += "<td><input type='button' class='btn btn-danger' itag='Delete' value='Delete' onclick='return DeleteProductDetails(this);'/></td>";
+                        temp += "</tr>";
+                    }
+
+                    $("#data").append(temp);
+                },
+                error: function (error) {
+                    alert("Fail");
+                }
+            });
         }
+
+
+        var count = 1;
+
+        function GetNextProduct() {
+
+            var pgVal = $("#drpPageSize").val();
+            var gtPage = count;
+            $("#GotoPage").val(++gtPage);
+            $.ajax({
+                url: "Index.aspx/GetNextProduct",
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({ pageSize: pgVal, nextProduct: count }),
+                success: function (data) {
+
+                    //console.log(val);
+                    //console.log(data.d.length);
+                    $("#data").empty();
+                    // var Data = JSON.parse(data.d);
+                    //var arr = Data.Table;
+                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                    for (var i = 0; i < data.d.length; i++) {
+                        temp += "<tr>";
+                        temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].ProductName + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].QuantityPerUnit + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].UnitPrice + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].UnitsInStock + "</label>" + "</td>";
+                        temp += "<td><input type='button' class='btn btn-success' itag='Edit' value='Edit' onclick='return EditProductDetails(this)'/></td>";
+                        temp += "<td><input type='button' class='btn btn-danger' itag='Delete' value='Delete' onclick='return DeleteProductDetails(this);'/></td>";
+                        temp += "</tr>";
+                    }
+
+                    $("#data").append(temp);
+                },
+                error: function (error) {
+                    alert("Fail");
+                }
+            });
+            count++;
+        }
+
+        function GetPreviousProduct() {
+            --count;
+
+            if (count <= 0) {
+                count = 1;
+            }
+                console.log(count);
+                var pgVal = $("#drpPageSize").val();
+                var gtPrevPage = count;
+                $("#GotoPage").val(gtPrevPage);
+                $.ajax({
+                    url: "Index.aspx/GetNextProduct",
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({ pageSize: pgVal, nextProduct: count-1 }),
+                    success: function (data) {
+
+                        //console.log(val);
+                        //console.log(data.d.length);
+                        $("#data").empty();
+                        // var Data = JSON.parse(data.d);
+                        //var arr = Data.Table;
+                        var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                        for (var i = 0; i < data.d.length; i++) {
+                            temp += "<tr>";
+                            temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].ProductName + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].QuantityPerUnit + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].UnitPrice + "</label>" + "</td>";
+                            temp += "<td>" + "<label>" + data.d[i].UnitsInStock + "</label>" + "</td>";
+                            temp += "<td><input type='button' class='btn btn-success' itag='Edit' value='Edit' onclick='return EditProductDetails(this)'/></td>";
+                            temp += "<td><input type='button' class='btn btn-danger' itag='Delete' value='Delete' onclick='return DeleteProductDetails(this);'/></td>";
+                            temp += "</tr>";
+                        }
+
+                        $("#data").append(temp);
+                    },
+                    error: function (error) {
+                        alert("Fail");
+                    }
+                });
+          
+        }
+
+        //var regex = /^[a-zA-Z0-9]{3,200}$/i;
+        //if (!regex.test($('#chk').val())) {
+        //    alert("Please fill data currectly...");
+        //}
         function DeleteProductDetails(control) {
             var Info = {
                 Id: $(control).closest("tr").find("label").html()
@@ -159,24 +309,26 @@
 
         $(function () {
 
-
+            var pageVal = $("#drpPageSize").val();
             $.ajax({
                 url: "Index.aspx/GetAllProducts",
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
+                data: JSON.stringify({ pageSize: pageVal }),
                 success: function (data) {
                     $("#data").empty();
-                    var Data = JSON.parse(data.d);
-                    var arr = Data.Table;
-                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name</th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
-                    for (var i = 0; i < arr.length; i++) {
+                   // var Data = JSON.parse(data.d);
+                    //var arr = Data.Table;
+                   // console.log(data.d.length);
+                    var temp = "<table style='width:800px;' class='table table-bordered table-striped table-sm prdtable' border='1'><tr style='text-align:center;'><th colspan='4'>Product Details</th><th  rowspan='2' style='padding-top:20px;'>Units In Stock</th><th colspan='2' rowspan='2' style='padding-top:20px;'>Operations</th></tr><tr><th>Product Id</th><th>Product Name<select id='#SortByProduct'><option selected='selected'>&darr;</option></select></th><th>Quantity per Unit</th><th>Unit Price</th></tr>";
+                    for (var i = 0; i < data.d.length; i++) {
                         temp += "<tr>";
-                        temp += "<td>" + "<label>" + arr[i].Product_Id + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + arr[i].Name + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + arr[i].Quantity_Per_Unit + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + arr[i].Unit_Price + "</label>" + "</td>";
-                        temp += "<td>" + "<label>" + arr[i].Units_In_Stock + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].ProductId + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].ProductName + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].QuantityPerUnit + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].UnitPrice + "</label>" + "</td>";
+                        temp += "<td>" + "<label>" + data.d[i].UnitsInStock + "</label>" + "</td>";
                         temp += "<td><input type='button' class='btn btn-success' itag='Edit' value='Edit' onclick='return EditProductDetails(this)'/></td>";
                         temp += "<td><input type='button' class='btn btn-danger' itag='Delete' value='Delete' onclick='return DeleteProductDetails(this);'/></td>";
                         temp += "</tr>";
