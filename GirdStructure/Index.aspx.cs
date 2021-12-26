@@ -15,7 +15,7 @@ namespace GirdStructure
     public partial class Index : System.Web.UI.Page
     {
         private static string strConnectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
-        private static SqlCommand _sqlCommand;
+        
         protected void Page_Load(object sender, EventArgs e)
         {
 
