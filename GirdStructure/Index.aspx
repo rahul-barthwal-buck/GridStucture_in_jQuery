@@ -114,7 +114,13 @@
                     $("#data").append(temp);
                 },
                 error: function (error) {
-                    alert("Fail");
+                    //alert("Fail");
+                    swal({
+                        title: " Oops!",
+                        text: " Something went wrong, you should choose again!",
+                        icon: "error",
+                        button: "Continue",
+                    });
                 }
             });
         }
@@ -187,7 +193,13 @@
                     }
                 },
                 error: function (error) {
-                    alert("Fail");
+                    //alert("Fail");
+                    swal({
+                        title: " Oops!",
+                        text: " Something went wrong, you should choose again!",
+                        icon: "error",
+                        button: "Continue",
+                    });
                 }
             });
             count++;
@@ -262,7 +274,13 @@
                         $("#data").append(temp);
                     },
                     error: function (error) {
-                        alert("Fail");
+                       // alert("Fail");
+                        swal({
+                            title: " Oops!",
+                            text: " Something went wrong, you should choose again!",
+                            icon: "error",
+                            button: "Continue",
+                        });
                     }
                 });
           
@@ -325,7 +343,7 @@
                         if ($(this).find("label").length > 0) {
                             var value = $(this).find("label").html();
                             $(this).find("label").hide();
-                            $(this).append("<input type='text' value='" + value + "' />");
+                            $(this).append("<input type='text' id='Val" + i + "' value='" + value + "' />");
                         }
 
                     }
@@ -335,63 +353,115 @@
 
             }
             else {
-                var Info = {
-                    ProductId: $(control).closest("tr").find("td:nth-child(1)").find("label").html(),
-                    ProductName: $(control).closest("tr").find("td:nth-child(2)").find("input").val(),
-                    QuantityPerUnit: $(control).closest("tr").find("td:nth-child(3)").find("input").val(),
-                    UnitPrice: $(control).closest("tr").find("td:nth-child(4)").find("input").val(),
-                    UnitsInStock: $(control).closest("tr").find("td:nth-child(5)").find("input").val()
-                };
 
-                
+                var Prd_Name = $("#Val1").val();
+                var QtyPerUnit = $("#Val2").val();
+                var Unit_Price = $("#Val3").val();
+                var Units_In_Stock = $("#Val4").val();
+                var regex1 = /^[a-zA-Z0-9\s]{3,30}$/;
+                var regex2 = /^[1-9]{1,10}[0-9]{1,10}$/;
+             
+                if (Prd_Name == "" || QtyPerUnit == "" || Unit_Price == "" || Units_In_Stock == "") {
+                    swal({
+                        title: " Oops!",
+                        text: "All Fields is required!",
+                        icon: "error",
+                        button: "Continue",
+                    });
+                } else if (!regex1.test(Prd_Name)) {
+                  
+                    swal({
+                        title: " Oops!",
+                        text: "Product Name only contain alphabets or Character length must between 3 and 30 !",
+                        icon: "error",
+                        button: "Continue",
+                    });
+                } else if (!regex2.test(QtyPerUnit)) {
+                  
+                    swal({
+                        title: " Oops!",
+                        text: "Quantity Per Unit must be number!",
+                        icon: "error",
+                        button: "Continue",
+                    });
+                } else if (!regex2.test(Unit_Price)) {
+                   
+                    swal({
+                        title: " Oops!",
+                        text: "Unit Price must be number!",
+                        icon: "error",
+                        button: "Continue",
+                    });
+                } else if (!regex2.test(Units_In_Stock)) {
+                  
+                    swal({
+                        title: " Oops!",
+                        text: "Units In Stock must be number!",
+                        icon: "error",
+                        button: "Continue",
+                    });
+                } else {
+                    var Info = {
+                        ProductId: $(control).closest("tr").find("td:nth-child(1)").find("label").html(),
+                        ProductName: $(control).closest("tr").find("td:nth-child(2)").find("input").val(),
+                        QuantityPerUnit: $(control).closest("tr").find("td:nth-child(3)").find("input").val(),
+                        UnitPrice: $(control).closest("tr").find("td:nth-child(4)").find("input").val(),
+                        UnitsInStock: $(control).closest("tr").find("td:nth-child(5)").find("input").val()
+                    };
 
-                $.ajax({
-                    url: "Index.aspx/UpdateProductDetails",
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify({ product: Info }),
-                    success: function (data) {
 
-                        ProductName = $(control).closest("tr").find("td:nth-child(2)").find("input").val();
-                        $(control).closest("tr").find("td:nth-child(2)").find("input").remove();
-                        $(control).closest("tr").find("td:nth-child(2)").append("<label>" + ProductName + "</label>");
 
-                        QuantityPerUnit = $(control).closest("tr").find("td:nth-child(3)").find("input").val();
-                        $(control).closest("tr").find("td:nth-child(3)").find("input").remove();
-                        $(control).closest("tr").find("td:nth-child(3)").append("<label>" + QuantityPerUnit + "</label>");
+                    $.ajax({
+                        url: "Index.aspx/UpdateProductDetails",
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify({ product: Info }),
+                        success: function (data) {
 
-                        UnitPrice = $(control).closest("tr").find("td:nth-child(4)").find("input").val();
-                        $(control).closest("tr").find("td:nth-child(4)").find("input").remove();
-                        $(control).closest("tr").find("td:nth-child(4)").append("<label>" + UnitPrice + "</label>");
+                            ProductName = $(control).closest("tr").find("td:nth-child(2)").find("input").val();
+                            $(control).closest("tr").find("td:nth-child(2)").find("input").remove();
+                            $(control).closest("tr").find("td:nth-child(2)").append("<label>" + ProductName + "</label>");
 
-                        UnitsInStock = $(control).closest("tr").find("td:nth-child(5)").find("input").val();
-                        $(control).closest("tr").find("td:nth-child(5)").find("input").remove();
-                        $(control).closest("tr").find("td:nth-child(5)").append("<label>" + UnitsInStock + "</label>");
+                            QuantityPerUnit = $(control).closest("tr").find("td:nth-child(3)").find("input").val();
+                            $(control).closest("tr").find("td:nth-child(3)").find("input").remove();
+                            $(control).closest("tr").find("td:nth-child(3)").append("<label>" + QuantityPerUnit + "</label>");
 
-                        $(control).val("Edit");
-                        //console.log(data.d);
-                        //alert("Data updated successfully...");
-                        //swal("Data updated successfully...");
-                        swal({
-                            title: "Great",
-                            text: "Data updated successfully...",
-                            icon: "success",
-                            button: "Continue",
-                        });
-                    },
-                    error: function (error) {
-                        // alert(error.status);
-                        swal({
-                            title: " Oops!",
-                            text: " Something went wrong, you should choose again!",
-                            icon: "error",
-                            button: "oh no!",
-                        });
-                        console.log(error);
-                    }
+                            UnitPrice = $(control).closest("tr").find("td:nth-child(4)").find("input").val();
+                            $(control).closest("tr").find("td:nth-child(4)").find("input").remove();
+                            $(control).closest("tr").find("td:nth-child(4)").append("<label>" + UnitPrice + "</label>");
 
-                });
+                            UnitsInStock = $(control).closest("tr").find("td:nth-child(5)").find("input").val();
+                            $(control).closest("tr").find("td:nth-child(5)").find("input").remove();
+                            $(control).closest("tr").find("td:nth-child(5)").append("<label>" + UnitsInStock + "</label>");
+
+                            $(control).val("Edit");
+                            //console.log(data.d);
+                            //alert("Data updated successfully...");
+                            //swal("Data updated successfully...");
+                            swal({
+                                title: "Great",
+                                text: "Data updated successfully...",
+                                icon: "success",
+                                button: "Continue",
+                            });
+                        },
+                        error: function (error) {
+                            // alert(error.status);
+                            swal({
+                                title: " Oops!",
+                                text: " Something went wrong, you should choose again!",
+                                icon: "error",
+                                button: "oh no!",
+                            });
+                            console.log(error);
+                        }
+
+                    });
+
+                }
+
+               
             }
         }
 
@@ -525,7 +595,13 @@
                     $("#data").append(temp);
                 },
                 error: function (error) {
-                    alert("Fail");
+                    //alert("Fail");
+                    swal({
+                        title: " Oops!",
+                        text: " Something went wrong, you should choose again!",
+                        icon: "error",
+                        button: "Continue",
+                    });
                 }
             });
         }
