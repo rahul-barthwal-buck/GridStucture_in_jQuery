@@ -2,4 +2,4 @@
 
 # Currently working in progress....
 
-# Before Running, please run the table script on MS SQL server.
+# Before Running Project, please create GridStructure as DataBase and then run the table script and stored procedure script on MS SQL server.
