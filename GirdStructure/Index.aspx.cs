@@ -20,27 +20,10 @@ namespace GirdStructure
         {
 
         }
-      
-
-       
 
         [WebMethod]
         public static bool DeleteProductDetails(int Id)
         {
-            //try
-            //{
-            //    SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
-            //    _sqlConnection.Open();
-            //    SqlCommand _sqlCommand = new SqlCommand("DELETE FROM ProductDetails WHERE Product_Id=" + Id, _sqlConnection);
-            //    _sqlCommand.ExecuteNonQuery();
-            //    _sqlConnection.Close();
-
-            //}
-            //catch (Exception e)
-            //{
-            //    return false;
-            //}
-            //return true;
 
             bool result = false;
             using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
@@ -62,26 +45,7 @@ namespace GirdStructure
         [WebMethod]
         public static bool UpdateProductDetails(Products product)
         {
-            //try
-            //{
-            //    SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
-            //    _sqlConnection.Open();
-            //    SqlCommand _sqlCommand = new SqlCommand("UPDATE ProductDetails SET Name=@ProductName,Quantity_Per_Unit=@QuantityPerUnit,Unit_Price=@UnitPrice, Units_In_Stock=@UnitsInStock WHERE Product_Id=@ProductId", _sqlConnection);
-            //    _sqlCommand.Parameters.AddWithValue("@ProductName", product.ProductName);
-            //    _sqlCommand.Parameters.AddWithValue("@QuantityPerUnit", product.QuantityPerUnit);
-            //    _sqlCommand.Parameters.AddWithValue("@UnitPrice", product.UnitPrice);
-            //    _sqlCommand.Parameters.AddWithValue("@UnitsInStock", product.UnitsInStock);
-            //    _sqlCommand.Parameters.AddWithValue("@ProductId", product.ProductId);
-            //    _sqlCommand.ExecuteNonQuery();
-            //    _sqlConnection.Close();
-
-            //}
-            //catch (Exception e)
-            //{
-            //    return false;
-            //}
-            //return true;
-
+        
             bool result = false;
             using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
             {
