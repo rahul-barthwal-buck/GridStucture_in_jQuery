@@ -22,167 +22,121 @@ namespace GirdStructure
         }
       
 
-        [WebMethod]
-        public static List<Products> GetAllProducts(int pageSize)
-        {
-
-            List<Products> productList = new List<Products>();
-            productList.Clear();
-            PagingAndSorting paging = new PagingAndSorting();
-            paging.PageSize = pageSize;
-            using (SqlConnection cn = new SqlConnection(strConnectionString))
-            {
-                cn.Open();
-                SqlCommand sqlCommand = new SqlCommand("SELECT TOP(@PageSize) Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails", cn);
-                sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    Products f = new Products();
-                    f.ProductId = (int)reader["Product_Id"];
-                    f.ProductName = (string)reader["Name"];
-                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
-                    f.UnitPrice = (int)reader["Unit_Price"];
-                    f.UnitsInStock = (int)reader["Units_In_Stock"];
-                    productList.Add(f);
-                }
-                cn.Close();
-            }
-            return productList;
-
-
-        }
+       
 
         [WebMethod]
         public static bool DeleteProductDetails(int Id)
         {
-            try
-            {
-                SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
-                _sqlConnection.Open();
-                SqlCommand _sqlCommand = new SqlCommand("DELETE FROM ProductDetails WHERE Product_Id=" + Id, _sqlConnection);
-                _sqlCommand.ExecuteNonQuery();
-                _sqlConnection.Close();
+            //try
+            //{
+            //    SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
+            //    _sqlConnection.Open();
+            //    SqlCommand _sqlCommand = new SqlCommand("DELETE FROM ProductDetails WHERE Product_Id=" + Id, _sqlConnection);
+            //    _sqlCommand.ExecuteNonQuery();
+            //    _sqlConnection.Close();
 
-            }
-            catch (Exception e)
+            //}
+            //catch (Exception e)
+            //{
+            //    return false;
+            //}
+            //return true;
+
+            bool result = false;
+            using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
             {
-                return false;
+                sqlconnection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand("sp_Delete_ProductDetails", sqlconnection))
+                {
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.Parameters.Add(new SqlParameter("@ProductId", Id));
+
+                    int rowsDeleteCount = sqlCommand.ExecuteNonQuery();
+                    if (rowsDeleteCount != 0)
+                        result = true;
+                }
             }
-            return true;
+            return result;
         }
 
         [WebMethod]
         public static bool UpdateProductDetails(Products product)
         {
-            try
-            {
-                SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
-                _sqlConnection.Open();
-                SqlCommand _sqlCommand = new SqlCommand("UPDATE ProductDetails SET Name=@ProductName,Quantity_Per_Unit=@QuantityPerUnit,Unit_Price=@UnitPrice, Units_In_Stock=@UnitsInStock WHERE Product_Id=@ProductId", _sqlConnection);
-                _sqlCommand.Parameters.AddWithValue("@ProductName", product.ProductName);
-                _sqlCommand.Parameters.AddWithValue("@QuantityPerUnit", product.QuantityPerUnit);
-                _sqlCommand.Parameters.AddWithValue("@UnitPrice", product.UnitPrice);
-                _sqlCommand.Parameters.AddWithValue("@UnitsInStock", product.UnitsInStock);
-                _sqlCommand.Parameters.AddWithValue("@ProductId", product.ProductId);
-                _sqlCommand.ExecuteNonQuery();
-                _sqlConnection.Close();
+            //try
+            //{
+            //    SqlConnection _sqlConnection = new SqlConnection(strConnectionString);
+            //    _sqlConnection.Open();
+            //    SqlCommand _sqlCommand = new SqlCommand("UPDATE ProductDetails SET Name=@ProductName,Quantity_Per_Unit=@QuantityPerUnit,Unit_Price=@UnitPrice, Units_In_Stock=@UnitsInStock WHERE Product_Id=@ProductId", _sqlConnection);
+            //    _sqlCommand.Parameters.AddWithValue("@ProductName", product.ProductName);
+            //    _sqlCommand.Parameters.AddWithValue("@QuantityPerUnit", product.QuantityPerUnit);
+            //    _sqlCommand.Parameters.AddWithValue("@UnitPrice", product.UnitPrice);
+            //    _sqlCommand.Parameters.AddWithValue("@UnitsInStock", product.UnitsInStock);
+            //    _sqlCommand.Parameters.AddWithValue("@ProductId", product.ProductId);
+            //    _sqlCommand.ExecuteNonQuery();
+            //    _sqlConnection.Close();
 
-            }
-            catch (Exception e)
+            //}
+            //catch (Exception e)
+            //{
+            //    return false;
+            //}
+            //return true;
+
+            bool result = false;
+            using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
             {
-                return false;
+                sqlconnection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand("sp_Update_ProductDetails", sqlconnection))
+                {
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@ProductName", product.ProductName);
+                    sqlCommand.Parameters.AddWithValue("@QuantityPerUnit", product.QuantityPerUnit);
+                    sqlCommand.Parameters.AddWithValue("@UnitPrice", product.UnitPrice);
+                    sqlCommand.Parameters.AddWithValue("@UnitsInStock", product.UnitsInStock);
+                    sqlCommand.Parameters.AddWithValue("@ProductId", product.ProductId);
+
+                    int rowsDeleteCount = sqlCommand.ExecuteNonQuery();
+                    if (rowsDeleteCount != 0)
+                        result = true;
+                }
             }
-            return true;
+            return result;
+
         }
 
-
         [WebMethod]
-        public static List<Products> GetProductDetailsByPageSize(int pageSize)
+        public static List<Products> GetProductDetails(int pageSize, int nextOrPreviousProduct, string sortBy)
         {
             List<Products> productList = new List<Products>();
             productList.Clear();
             PagingAndSorting paging = new PagingAndSorting();
             paging.PageSize = pageSize;
-            using (SqlConnection cn = new SqlConnection(strConnectionString))
+            paging.NextOrPrevious = nextOrPreviousProduct;
+            paging.SortBy = sortBy;
+           
+            using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
             {
-                cn.Open();
-                SqlCommand sqlCommand = new SqlCommand("SELECT TOP(@PageSize) Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails", cn);
-                sqlCommand.Parameters.AddWithValue("@PageSize",paging.PageSize);
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
+                sqlconnection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand("sp_Get_ProductDetails", sqlconnection))
                 {
-                    Products f = new Products();
-                    f.ProductId = (int)reader["Product_Id"];
-                    f.ProductName = (string)reader["Name"];
-                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
-                    f.UnitPrice = (int)reader["Unit_Price"];
-                    f.UnitsInStock = (int)reader["Units_In_Stock"];
-                    productList.Add(f);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
+                    sqlCommand.Parameters.AddWithValue("@NextOrPrevious", paging.NextOrPrevious);
+                    sqlCommand.Parameters.AddWithValue("@SortBy", paging.SortBy);
+
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Products f = new Products();
+                        f.ProductId = (int)reader["Product_Id"];
+                        f.ProductName = (string)reader["Name"];
+                        f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
+                        f.UnitPrice = (int)reader["Unit_Price"];
+                        f.UnitsInStock = (int)reader["Units_In_Stock"];
+                        productList.Add(f);
+                    }
+                    sqlconnection.Close();
                 }
-                cn.Close();
-            }
-            return productList;
-        }
-
-
-        [WebMethod]
-        public static List<Products> GetNextProduct(int pageSize, int nextProduct)
-        {
-            List<Products> productList = new List<Products>();
-            productList.Clear();
-            PagingAndSorting paging = new PagingAndSorting();
-            paging.PageSize = pageSize;
-            paging.NextProduct = nextProduct;
-            using (SqlConnection cn = new SqlConnection(strConnectionString))
-            {
-                cn.Open();
-                SqlCommand sqlCommand = new SqlCommand("SELECT Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails ORDER BY  Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock OFFSET (@PageSize*@NextProduct) ROWS FETCH NEXT (@PageSize) ROWS ONLY", cn);
-                sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
-                sqlCommand.Parameters.AddWithValue("@NextProduct", paging.NextProduct);
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    Products f = new Products();
-                    f.ProductId = (int)reader["Product_Id"];
-                    f.ProductName = (string)reader["Name"];
-                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
-                    f.UnitPrice = (int)reader["Unit_Price"];
-                    f.UnitsInStock = (int)reader["Units_In_Stock"];
-                    productList.Add(f);
-                }
-                cn.Close();
-            }
-            return productList;
-        }
-
-
-        [WebMethod]
-        public static List<Products> GetPreviousProduct(int pageSize, int nextProduct)
-        {
-            List<Products> productList = new List<Products>();
-            productList.Clear();
-            PagingAndSorting paging = new PagingAndSorting();
-            paging.PageSize = pageSize;
-            paging.NextProduct = nextProduct;
-            using (SqlConnection cn = new SqlConnection(strConnectionString))
-            {
-                cn.Open();
-                SqlCommand sqlCommand = new SqlCommand("SELECT Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock FROM ProductDetails ORDER BY  Product_Id,Name,Quantity_Per_Unit,Unit_Price,Units_In_Stock OFFSET (@PageSize*@NextProduct) ROWS FETCH NEXT (@PageSize) ROWS ONLY", cn);
-                sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
-                sqlCommand.Parameters.AddWithValue("@NextProduct", paging.NextProduct);
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    Products f = new Products();
-                    f.ProductId = (int)reader["Product_Id"];
-                    f.ProductName = (string)reader["Name"];
-                    f.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
-                    f.UnitPrice = (int)reader["Unit_Price"];
-                    f.UnitsInStock = (int)reader["Units_In_Stock"];
-                    productList.Add(f);
-                }
-                cn.Close();
             }
             return productList;
         }
