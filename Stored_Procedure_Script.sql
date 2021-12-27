@@ -3,16 +3,16 @@
 
 USE [GridStructure]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Update_ProductDetails]    Script Date: 12/26/2021 10:06:00 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Update_ProductDetails]    Script Date: 12/27/2021 5:53:01 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[sp_Update_ProductDetails]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Get_ProductDetails]    Script Date: 12/26/2021 10:06:00 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Get_ProductDetails]    Script Date: 12/27/2021 5:53:01 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[sp_Get_ProductDetails]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Delete_ProductDetails]    Script Date: 12/26/2021 10:06:00 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Delete_ProductDetails]    Script Date: 12/27/2021 5:53:01 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[sp_Delete_ProductDetails]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Delete_ProductDetails]    Script Date: 12/26/2021 10:06:00 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Delete_ProductDetails]    Script Date: 12/27/2021 5:53:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -37,7 +37,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Get_ProductDetails]    Script Date: 12/26/2021 10:06:00 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Get_ProductDetails]    Script Date: 12/27/2021 5:53:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -180,14 +180,14 @@ BEGIN
     END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Update_ProductDetails]    Script Date: 12/26/2021 10:06:00 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Update_ProductDetails]    Script Date: 12/27/2021 5:53:01 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE
 
- PROC [dbo].[sp_Update_ProductDetails] @ProductId INT, @ProductName NVARCHAR(30), @QuantityPerUnit INT,@UnitPrice INT, @UnitsInStock INT  AS
+ PROC [dbo].[sp_Update_ProductDetails] @ProductId INT, @ProductName NVARCHAR(30), @QuantityPerUnit INT,@UnitPrice DECIMAL(12,2), @UnitsInStock INT  AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
@@ -205,3 +205,4 @@ BEGIN
 	END CATCH
 END
 GO
+

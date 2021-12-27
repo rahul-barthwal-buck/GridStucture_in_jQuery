@@ -5,6 +5,7 @@ using System.Web;
 
 namespace GirdStructure
 {
+    //This class is for paging and sorting
     public class PagingAndSorting
     {
         public int PageSize { get; set; }
