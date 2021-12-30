@@ -1,0 +1,13 @@
+﻿.prdtable tr td:hover {
+    background: #F5ECFF;
+    color: #6100CE;
+}
+
+a {
+    text-decoration: none;
+}
+
+.GotoPage {
+    width: 40px;
+    text-align: center;
+}

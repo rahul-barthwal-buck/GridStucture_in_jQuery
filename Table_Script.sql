@@ -3,10 +3,10 @@
 
 USE [GridStructure]
 GO
-/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/27/2021 5:51:51 PM ******/
+/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/30/2021 6:58:12 PM ******/
 DROP TABLE IF EXISTS [dbo].[ProductDetails]
 GO
-/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/27/2021 5:51:51 PM ******/
+/****** Object:  Table [dbo].[ProductDetails]    Script Date: 12/30/2021 6:58:12 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -51,3 +51,4 @@ INSERT [dbo].[ProductDetails] ([Product_Id], [Name], [Quantity_Per_Unit], [Unit_
 GO
 SET IDENTITY_INSERT [dbo].[ProductDetails] OFF
 GO
+

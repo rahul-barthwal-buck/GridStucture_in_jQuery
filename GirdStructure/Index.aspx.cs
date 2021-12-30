@@ -26,20 +26,27 @@ namespace GirdStructure
         {
 
             bool result = false;
-            using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
+           try
             {
-                sqlconnection.Open();
-                
-                // here sp_Delete_ProductDetails Stored procedure is used to delete that product details
-                using (SqlCommand sqlCommand = new SqlCommand("sp_Delete_ProductDetails", sqlconnection))
+                using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
                 {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlCommand.Parameters.Add(new SqlParameter("@ProductId", Id));
+                    sqlconnection.Open();
 
-                    int rowsDeleteCount = sqlCommand.ExecuteNonQuery();
-                    if (rowsDeleteCount != 0)
-                        result = true;
+                    // here sp_Delete_ProductDetails Stored procedure is used to delete that product details
+                    using (SqlCommand sqlCommand = new SqlCommand("sp_Delete_ProductDetails", sqlconnection))
+                    {
+                        sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCommand.Parameters.Add(new SqlParameter("@ProductId", Id));
+
+                        int rowsDeleteCount = sqlCommand.ExecuteNonQuery();
+                        if (rowsDeleteCount != 0)
+                            result = true;
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                throw e;
             }
             return result;
         }
@@ -48,25 +55,31 @@ namespace GirdStructure
         [WebMethod]
         public static bool UpdateProductDetails(Products product)
         {
-        
             bool result = false;
-            using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
+            try
             {
-                sqlconnection.Open();
-                // here sp_Update_ProductDetails Stored procedure is used to update that product details
-                using (SqlCommand sqlCommand = new SqlCommand("sp_Update_ProductDetails", sqlconnection))
+                using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
                 {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlCommand.Parameters.AddWithValue("@ProductName", product.ProductName);
-                    sqlCommand.Parameters.AddWithValue("@QuantityPerUnit", product.QuantityPerUnit);
-                    sqlCommand.Parameters.AddWithValue("@UnitPrice", product.UnitPrice);
-                    sqlCommand.Parameters.AddWithValue("@UnitsInStock", product.UnitsInStock);
-                    sqlCommand.Parameters.AddWithValue("@ProductId", product.ProductId);
+                    sqlconnection.Open();
+                    // here sp_Update_ProductDetails Stored procedure is used to update that product details
+                    using (SqlCommand sqlCommand = new SqlCommand("sp_Update_ProductDetails", sqlconnection))
+                    {
+                        sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCommand.Parameters.AddWithValue("@ProductName", product.ProductName);
+                        sqlCommand.Parameters.AddWithValue("@QuantityPerUnit", product.QuantityPerUnit);
+                        sqlCommand.Parameters.AddWithValue("@UnitPrice", product.UnitPrice);
+                        sqlCommand.Parameters.AddWithValue("@UnitsInStock", product.UnitsInStock);
+                        sqlCommand.Parameters.AddWithValue("@ProductId", product.ProductId);
 
-                    int rowsDeleteCount = sqlCommand.ExecuteNonQuery();
-                    if (rowsDeleteCount != 0)
-                        result = true;
+                        int rowsUpdateCount = sqlCommand.ExecuteNonQuery();
+                        if (rowsUpdateCount != 0)
+                            result = true;
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                throw e;
             }
             return result;
 
@@ -84,33 +97,40 @@ namespace GirdStructure
             paging.PageSize = pageSize;
             paging.NextOrPrevious = nextOrPreviousProduct;
             paging.SortBy = sortBy;
-           
-            using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
-            {
-                sqlconnection.Open();
-                // here sp_Get_ProductDetails Stored procedure is used to get all the product details
-                using (SqlCommand sqlCommand = new SqlCommand("sp_Get_ProductDetails", sqlconnection))
-                {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
-                    sqlCommand.Parameters.AddWithValue("@NextOrPrevious", paging.NextOrPrevious);
-                    sqlCommand.Parameters.AddWithValue("@SortBy", paging.SortBy);
 
-                    //Here Using SQLReader is used which is connection oriented and here using because no updation performed in this function.
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
-                    while (reader.Read())
+            try
+            {
+                using (SqlConnection sqlconnection = new SqlConnection(strConnectionString))
+                {
+                    sqlconnection.Open();
+                    // here sp_Get_ProductDetails Stored procedure is used to get all the product details
+                    using (SqlCommand sqlCommand = new SqlCommand("sp_Get_ProductDetails", sqlconnection))
                     {
-                        //Here the returend object is type casted into respective data type and thenm stored in the model class varibale and then added into the List of Product type and then returen the list object for displaying the data 
-                        Products product = new Products();
-                        product.ProductId = (int)reader["Product_Id"];
-                        product.ProductName = (string)reader["Name"];
-                        product.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
-                        product.UnitPrice = (decimal)reader["Unit_Price"];
-                        product.UnitsInStock = (int)reader["Units_In_Stock"];
-                        productList.Add(product);
+                        sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCommand.Parameters.AddWithValue("@PageSize", paging.PageSize);
+                        sqlCommand.Parameters.AddWithValue("@NextOrPrevious", paging.NextOrPrevious);
+                        sqlCommand.Parameters.AddWithValue("@SortBy", paging.SortBy);
+
+                        //Here Using SQLReader is used which is connection oriented and here using because no updation performed in this function.
+                        SqlDataReader reader = sqlCommand.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            //Here the returend object is type casted into respective data type and thenm stored in the model class varibale and then added into the List of Product type and then returen the list object for displaying the data 
+                            Products product = new Products();
+                            product.ProductId = (int)reader["Product_Id"];
+                            product.ProductName = (string)reader["Name"];
+                            product.QuantityPerUnit = (int)reader["Quantity_Per_Unit"];
+                            product.UnitPrice = (decimal)reader["Unit_Price"];
+                            product.UnitsInStock = (int)reader["Units_In_Stock"];
+                            productList.Add(product);
+                        }
+                        sqlconnection.Close();
                     }
-                    sqlconnection.Close();
                 }
+            }
+            catch(Exception e)
+            {
+                throw e;
             }
             return productList;
         }
