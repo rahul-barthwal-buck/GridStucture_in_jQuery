@@ -390,11 +390,17 @@
                         });
                         $(control).closest("tr").find("input[itag='Edit']").val("Edit");
                         $(control).closest("tr").find("td:eq(6)").remove();
+                        $("#dialog").dialog({
+                            title:"Success"
+                        });
                         $("#dialog").html("Cancel Updation").dialog("open");
                         $(this).dialog("close");
 
                     },
-                    Cancel: function () { $(this).dialog("close"); }
+                    Cancel: function () {
+
+                        $(this).dialog("close");
+                    }
                 }
             });
 
