@@ -3,6 +3,8 @@
     color: #6100CE;
 }
 
+
+
 a {
     text-decoration: none;
 }
@@ -11,3 +13,16 @@ a {
     width: 40px;
     text-align: center;
 }
+
+#SortByDescUnitPrice, #SortByAscUnitPrice, #SortByDescQuantityperUnit, #SortByAscQuantityperUnit, #SortByDescProductName, #SortByAscProductName {
+    font-size: 20px;
+}
+
+#Operaions, #UnitStock {
+    padding-top: 20px;
+}
+
+#PrdDetails {
+    text-align: center;
+}
+
